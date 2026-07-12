@@ -1,0 +1,182 @@
+name: OrionCore consumer migration or classification
+description: Track OrionCore evidence, migration, or support classification for one detected repository.
+title: "[OrionCore]: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Open one issue per detected repository. Track every relevant branch or head in the branch checklist below, including historical, unsupported, and false-positive records.
+
+  - type: input
+    id: consumer-repository
+    attributes:
+      label: Consumer repository
+      description: Enter the organization/repository name.
+      placeholder: ORION-EE/example-consumer
+    validations:
+      required: true
+
+  - type: textarea
+    id: branches
+    attributes:
+      label: Branch and head checklist
+      description: Add one checklist item for every relevant branch or head, including its exact current commit SHA and classification.
+      placeholder: |
+        - [ ] main @ `0123456789abcdef0123456789abcdef01234567` — supported
+        - [ ] old-prototype @ `89abcdef0123456789abcdef0123456789abcdef` — historical
+    validations:
+      required: true
+
+  - type: input
+    id: owner
+    attributes:
+      label: Migration owner
+      description: Name or @mention of the person accountable for this migration.
+      placeholder: "@owner"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: support-classification
+    attributes:
+      label: Support classification
+      description: Select the evidence-based support state used by the OrionCore registries.
+      options:
+        - supported
+        - verification-pending
+        - blocked-baseline
+        - migration-required
+        - historical
+        - unsupported
+        - false-positive
+    validations:
+      required: true
+
+  - type: input
+    id: old-pin
+    attributes:
+      label: Exact old OrionCore pin
+      description: Provide the current immutable tag or commit SHA. Include the resolved commit SHA when using a tag. Use "Unknown — needs owner" for an unresolved weak signal.
+      placeholder: v1.2.3 / 0123456789abcdef0123456789abcdef01234567
+    validations:
+      required: true
+
+  - type: input
+    id: new-pin
+    attributes:
+      label: Exact candidate OrionCore pin
+      description: Provide the proposed immutable tag or commit SHA. Include the resolved commit SHA when using a tag. Use "Not applicable — classification only" when no migration is proposed.
+      placeholder: v1.3.0 / 89abcdef0123456789abcdef0123456789abcdef
+    validations:
+      required: true
+
+  - type: textarea
+    id: environments-mcus
+    attributes:
+      label: Environments and MCUs
+      description: List every build/runtime environment and MCU covered by this migration.
+      placeholder: |
+        - Environment/toolchain:
+        - Board/MCU:
+    validations:
+      required: true
+
+  - type: textarea
+    id: baseline-evidence
+    attributes:
+      label: Baseline evidence
+      description: Link logs or artifacts and include the command, environment/MCU, and result for the old pin.
+      placeholder: |
+        Command:
+        Environment/MCU:
+        Result:
+        Evidence URL:
+    validations:
+      required: true
+
+  - type: textarea
+    id: candidate-evidence
+    attributes:
+      label: Candidate evidence
+      description: Link logs or artifacts and include the command, environment/MCU, and result for the new pin.
+      placeholder: |
+        Command:
+        Environment/MCU:
+        Result:
+        Evidence URL:
+    validations:
+      required: true
+
+  - type: textarea
+    id: changelog-migration-impact
+    attributes:
+      label: Changelog and migration impact
+      description: Summarize relevant changelog entries, required code/configuration changes, and compatibility impact. Enter "None" with justification when there is no impact.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: hil-status
+    attributes:
+      label: HIL status
+      options:
+        - Passed
+        - Failed
+        - Not run
+        - Not applicable
+    validations:
+      required: true
+
+  - type: textarea
+    id: hil-evidence
+    attributes:
+      label: HIL evidence
+      description: Link HIL logs/artifacts, or explain why HIL was not run or is not applicable.
+      placeholder: Evidence URL or rationale
+    validations:
+      required: true
+
+  - type: input
+    id: rollback-pin
+    attributes:
+      label: Rollback pin
+      description: Provide the exact immutable OrionCore pin that restores the previous known-good state.
+      placeholder: 0123456789abcdef0123456789abcdef01234567
+    validations:
+      required: true
+
+  - type: input
+    id: rollback-owner
+    attributes:
+      label: Rollback owner
+      description: Name or @mention of the person authorized and prepared to perform the rollback.
+      placeholder: "@owner"
+    validations:
+      required: true
+
+  - type: textarea
+    id: rollback-command
+    attributes:
+      label: Rollback command
+      description: Provide the exact command or deterministic procedure used to restore the rollback pin.
+      placeholder: git submodule update ... / dependency-manager command ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: Link blocking or related issues/PRs and list ordering constraints. Enter "None" when independent.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: review-acknowledgements
+    attributes:
+      label: Review acknowledgements
+      options:
+        - label: I acknowledge that a qualified owner must manually review the migration evidence.
+          required: true
+        - label: I acknowledge that this migration must not be auto-merged.
+          required: true
